@@ -1,4 +1,5 @@
 import { Particle } from "./particle";
+import dat from "dat.gui";
 
 const canvas = document.getElementById("snow-particles") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d");
@@ -20,6 +21,19 @@ let canvasWidth: number = window.innerWidth;
 let canvasHeight: number = window.innerHeight;
 let particles: Particle[] = [];
 
+// dat.GUI 설정
+const gui = new dat.GUI();
+const settings = {
+  total: 50,
+  acc: 1.02,
+};
+
+gui
+  .add(settings, "total", 10, 200)
+  .step(1)
+  .onChange(() => init());
+gui.add(settings, "acc", 1, 1.1).step(0.01);
+
 const randomNumBetween = (min: number, max: number): number => {
   return Math.random() * (max - min) + min;
 };
@@ -32,7 +46,7 @@ const createParticle = (): Particle => {
     (5 * canvasWidth) / 100
   );
   const vy = randomNumBetween(1, 5);
-  const acc = 1.02;
+  const acc = settings.acc;
 
   return new Particle({ x, y, radius, vy, acc });
 };
@@ -42,17 +56,17 @@ const init = (): void => {
 
   canvasWidth = window.innerWidth;
   canvasHeight = window.innerHeight;
-  const reflectDPRWidth = canvasWidth * DPR;
-  const reflectDPRHeight = canvasHeight * DPR;
+  const reflectedDPRWidth = canvasWidth * DPR;
+  const reflectedDPRHeight = canvasHeight * DPR;
 
   canvas.style.width = `${canvasWidth}px`;
   canvas.style.height = `${canvasHeight}px`;
-  canvas.width = reflectDPRWidth;
-  canvas.height = reflectDPRHeight;
+  canvas.width = reflectedDPRWidth;
+  canvas.height = reflectedDPRHeight;
   ctx.scale(DPR, DPR);
 
   particles = [];
-  const TOTAL = canvasWidth / 20;
+  const TOTAL = settings.total;
 
   for (let i = 0; i < TOTAL; i++) {
     particles.push(createParticle());
@@ -70,6 +84,7 @@ const render = (): void => {
 
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   particles.forEach(particle => {
+    particle.acc = settings.acc; // acc 업데이트
     particle.update();
     particle.draw(ctx);
 
