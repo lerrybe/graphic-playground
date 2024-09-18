@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>snow particles</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="./main.ts"></script>
+    <canvas id="snow-particles"></canvas>
+    <svg>
+      <!-- 블러나 필터를 사용할 때 사용되는 svg 요소 -->
+      <defs>
+        <filter id="gooey">
+          <fegaussianBlur stdDeviation="20" in="SourceGraphic" result="blur1" />
+          <feColorMatrix
+            in="blur1"
+            mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 40 -23" />
+        </filter>
+      </defs>
+    </svg>
+  </body>
+</html>
