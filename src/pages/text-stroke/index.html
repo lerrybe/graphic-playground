@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>text-stroke</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <canvas id="text-outline-canvas"></canvas>
+
+    <h1 id="text-h1">HELLO, THIS IS YEJI.</h1>
+
+    <svg>
+      <filter id="text-stroke-filter">
+        <feMorphology
+          operator="dilate"
+          radius="6"
+          in="SourceGraphic"
+          result="OUTLINE" />
+        <feComposite in="OUTLINE" in2="SourceGraphic" operator="out" />
+      </filter>
+    </svg>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
